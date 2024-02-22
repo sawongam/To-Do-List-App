@@ -247,20 +247,44 @@ class _HomePageState extends State<HomePage> {
                         ),
                       );
               } else {
-                return Shimmer.fromColors(
-                  baseColor: Colors.grey[800]!,
-                  highlightColor: Colors.grey[700]!,
+                return Shimmer(
+                  gradient:  LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    colors: [
+                      Colors.blueGrey[900]!,
+                      Colors.blueGrey[800]!,
+                      Colors.blueGrey[900]!,
+                      Colors.blueGrey[900]!,
+                      Colors.blueGrey[800]!,
+                      Colors.blueGrey[900]!,
+                    ],
+                  ),
                   child: ListView.builder(
                       itemCount: 5,
                       itemBuilder: (context, index) {
                         return ListTile(
                           title: Container(
-                            height: 45,
+                            height: 50,
                             color: Colors.grey[900],
                           ),
                         );
                       }),
                 );
+                // return Shimmer.fromColors(
+                //   baseColor: Colors.grey[800]!,
+                //   highlightColor: Colors.grey[700]!,
+                //   child: ListView.builder(
+                //       itemCount: 5,
+                //       itemBuilder: (context, index) {
+                //         return ListTile(
+                //           title: Container(
+                //             height: 45,
+                //             color: Colors.grey[900],
+                //           ),
+                //         );
+                //       }),
+                // );
               }
             },
           ),
