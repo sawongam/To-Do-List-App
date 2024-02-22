@@ -248,7 +248,7 @@ class _HomePageState extends State<HomePage> {
                       );
               } else {
                 return Shimmer(
-                  gradient:  LinearGradient(
+                  gradient: LinearGradient(
                     begin: Alignment.centerLeft,
                     end: Alignment.centerRight,
                     colors: [
@@ -271,20 +271,6 @@ class _HomePageState extends State<HomePage> {
                         );
                       }),
                 );
-                // return Shimmer.fromColors(
-                //   baseColor: Colors.grey[800]!,
-                //   highlightColor: Colors.grey[700]!,
-                //   child: ListView.builder(
-                //       itemCount: 5,
-                //       itemBuilder: (context, index) {
-                //         return ListTile(
-                //           title: Container(
-                //             height: 45,
-                //             color: Colors.grey[900],
-                //           ),
-                //         );
-                //       }),
-                // );
               }
             },
           ),
