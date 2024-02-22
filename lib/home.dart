@@ -59,8 +59,6 @@ class _HomePageState extends State<HomePage> {
                     ),
                     style: const TextStyle(
                       color: Colors.white,
-                      // fontSize: 18,
-                      // fontWeight: FontWeight.bold,
                     ),
                   ),
                   backgroundColor: Colors.blueGrey[900],
@@ -115,20 +113,19 @@ class _HomePageState extends State<HomePage> {
                   shrinkWrap: true,
                   itemCount: tasks.length,
                   itemBuilder: (context, index) {
+                    int id = tasks[index]['id'];
                     String task = tasks[index]['title'];
                     int isDone = tasks[index]['isDone'];
                     bool isDoneBool = isDone == 1;
                     return GestureDetector(
                       onLongPress: () {
-                        deleteData();
+                        deleteData(id);
                       },
                       child: Card(
                         color: Colors.blueGrey[900],
                         child: ListTile(
                           leading: InkWell(
-                            onTap: () {
-                              print(tasks[index]);
-                            },
+                            onTap: () {},
                             child: Container(
                               height: 35,
                               width: 5,
@@ -143,14 +140,14 @@ class _HomePageState extends State<HomePage> {
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
                                   )
-                                : TextStyle(
+                                : const TextStyle(
                                     color: Colors.white,
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
                                     decoration: TextDecoration.lineThrough,
                                     decorationStyle: TextDecorationStyle.solid,
-                                    decorationColor: Colors.grey[900]!,
-                                    decorationThickness: 3,
+                                    decorationColor: Colors.white,
+                                    decorationThickness: 2,
                                   ),
                           ),
                           trailing: CupertinoSwitch(
@@ -159,7 +156,7 @@ class _HomePageState extends State<HomePage> {
                               setState(() {
                                 isDoneBool = !isDoneBool;
                               });
-                              updateIsDone(index, isDone);
+                              updateIsDone(id, isDone);
                             },
                             activeColor: Colors.green,
                           ),
@@ -193,7 +190,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   void readData() async {
-    List<Map> tempTasks = await db.rawQuery('SELECT * FROM tasks');
+    List<Map> tempTasks =
+        List<Map>.from(await db.rawQuery('SELECT * FROM tasks'));
+    tempTasks.sort((a, b) => a['isDone'].compareTo(b['isDone']));
     setState(() {
       tasks = tempTasks;
     });
@@ -206,8 +205,7 @@ class _HomePageState extends State<HomePage> {
     readData();
   }
 
-  void updateIsDone(int index, int isDone) async {
-    int id = tasks[index]['id'];
+  void updateIsDone(int id, int isDone) async {
     await db.transaction((txn) async {
       txn.rawUpdate('UPDATE tasks SET isDone = ? WHERE id = ?',
           [isDone == 1 ? 0 : 1, id]);
@@ -215,9 +213,9 @@ class _HomePageState extends State<HomePage> {
     readData();
   }
 
-  void deleteData() async {
+  void deleteData(int id) async {
     await db.transaction((txn) async {
-      txn.rawDelete('DELETE FROM tasks WHERE isDone = 1');
+      txn.rawDelete('DELETE FROM tasks WHERE id = $id');
     });
     readData();
   }
